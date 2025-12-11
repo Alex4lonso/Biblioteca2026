@@ -79,12 +79,11 @@ public class Biblioteca2025 {
                 case 3:
                     prorroga();
                     break;
-                    case 4:
-                        listadoPrestamo();
+                case 4:
+                    listadoPrestamo();
                     break;
             }
         } while (Opcion != 9);
-        sc.nextLine();
         menuPrincipal();
     }
 
@@ -117,7 +116,7 @@ public class Biblioteca2025 {
                     break;
             }
         } while (Opcion != 9);
-        sc.nextLine();
+
         menuPrincipal();
     }
 
@@ -149,7 +148,6 @@ public class Biblioteca2025 {
                     break;
             }
         } while (Opcion != 9);
-        sc.nextLine();
         menuPrincipal();
     }
 
@@ -180,6 +178,7 @@ public class Biblioteca2025 {
                     break;
             }
         } while (Opcion != 9);
+        menuPrincipal();
     }
 
     /**
@@ -190,6 +189,7 @@ public class Biblioteca2025 {
         System.out.print("\n\nISBN del libro: ");
         String isbn = sc.next();
         System.out.print("Titulo: ");
+        sc.nextLine();
         String titulo = sc.nextLine();
         System.out.print("Autor: ");
         String autor = sc.nextLine();
@@ -197,7 +197,6 @@ public class Biblioteca2025 {
         String genero = sc.next();
         System.out.println("Numero de ejemplares:");
         int ejemplares = sc.nextInt();
-        sc.nextLine();
         libros.add(new Libro(isbn, titulo, autor, genero, ejemplares));
     }
 
@@ -205,6 +204,7 @@ public class Biblioteca2025 {
         System.out.print("\n\nDNI del usuario: ");
         String dni = sc.next();
         System.out.print("Nombre: ");
+        sc.next();
         String nombre = sc.nextLine();
         System.out.print("email: ");
         String email = sc.next();
@@ -218,33 +218,41 @@ public class Biblioteca2025 {
      */
 // Scripts para modificar
     public static void modificarLibro() {
-        System.out.print("\nTeclea el nombre del contacto a modificar: ");
-        String nombre = sc.next();
-        int l = buscaLibro(nombre);
+        System.out.print("\nTeclea el isbn del libro a modificar: ");
+        String isbn = sc.next();
+        int l = buscaLibro(isbn);
         if (l == -1) {
             System.out.println("Este libro no existe");
         } else {
-            System.out.print("\n\nTitulo del libro que quieres modificar: ");
-            String titulo = sc.next();
-            System.out.print("Autor: ");
+            System.out.print("\n\nTitulo a modificar:");
+            sc.next();
+            String titulo = sc.nextLine();
+            System.out.print("Autor:");
+            sc.next();
             String autor = sc.next();
             System.out.println("Genero:");
             String genero = sc.next();
+            System.out.println("Ejemplares:");
+            int ejemplares = sc.nextInt();
+
             libros.get(l).setTitulo(titulo);
             libros.get(l).setAutor(autor);
             libros.get(l).setGenero(genero);
+            libros.get(l).setEjemplares(ejemplares);
+
+            System.out.println("Modificacion realizada con exito.");
         }
     }
 
     public static void modificarUsuario() {
-        System.out.print("\nTeclea el nombre del usuario a modificar: ");
-        String nombre = sc.next();
-        int u = buscaUsuario(nombre);
+        System.out.print("\nTeclea el dni del usuario a modificar: ");
+        String dni = sc.next();
+        int u = buscaUsuario(dni);
         if (u == -1) {
-            System.out.println("Ese nombre no existe.");
+            System.out.println("Este usuario no existe.");
         } else {
             System.out.print("\n\nNombre del Usuario al que quieres modificar: ");
-            nombre = sc.next();
+            String nombre = sc.next();
             System.out.print("email: ");
             String email = sc.next();
             System.out.print("telefono: ");
@@ -252,6 +260,8 @@ public class Biblioteca2025 {
             usuarios.get(u).setNombre(nombre);
             usuarios.get(u).setTelefono(telefono);
             usuarios.get(u).setEmail(email);
+
+            System.out.println("Modificacion realizada con exito.");
         }
     }
 
