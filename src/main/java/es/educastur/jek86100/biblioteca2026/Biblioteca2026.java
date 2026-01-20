@@ -5,10 +5,8 @@ package es.educastur.jek86100.biblioteca2026;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
-import java.util.Set;
-
-
 
 //MODIFICACION EJEJEJEWADEASDKLSA XD
 /**
@@ -35,14 +33,12 @@ public class Biblioteca2026 {
      *                       MAIN
      * ===================================================== */
     public static void main(String[] args) {
-        //cargaDatos();
+        cargaDatos();
         //menuPrincipal();
         cargaDatosPrueba12();
-        uno();
-        dos();
-        tres();
-        cuatro();
-        //cinco(); No me sale.
+        //listadosConStreams();
+        ordenacionesConStreams();
+      
 
     }
 
@@ -505,6 +501,70 @@ public class Biblioteca2026 {
             System.out.println(p);
         }
 
+    }
+
+    /* =====================================================
+     *                 LISTADOS CON STREAMS
+     * ===================================================== */
+    public static void listadosConStreams() {
+        System.out.println("\nLibros listados desde un STREAM:");
+        libros.stream()
+                .forEach(l -> System.out.println(l));
+        System.out.println("\nLibros listados desde un STREAM:");
+        usuarios.stream()
+                .forEach(u -> System.out.println(u));
+
+        //Listados selectivos (filter) con STREAMS
+        System.out.println("\nLibros listados con genero aventuras:");
+        libros.stream().filter(l -> l.getGenero().equalsIgnoreCase("aventuras")
+                && l.getAutor().equalsIgnoreCase("jrr Tolkien"))
+                .forEach(l -> System.out.println(l));
+
+        System.out.println("\nPrestamos fuera de plazo:");
+        prestamos.stream().filter(p -> p.getFechaDev().isBefore(LocalDate.now()))
+                .forEach(p -> System.out.println(p));
+
+        System.out.println("Prestamos activos y no activos del usuario(Teclea el Nombre)");
+        System.out.println("\nTecleame el nombre de usuario:");
+        String nombre = sc.next();
+        System.out.println("\nListado de prestamos activos y no activos del usuario " + nombre);
+        prestamos.stream().filter(p -> p.getUsuarioPrest().getNombre().equalsIgnoreCase(nombre))
+                .forEach(p -> System.out.println(p));
+        prestamosHist.stream().filter(p -> p.getUsuarioPrest().getNombre().equalsIgnoreCase(nombre))
+                .forEach(p -> System.out.println(p));
+
+        System.out.println("\nPrestamos activos de libros del genero aventuras:");
+        prestamos.stream().filter(p -> p.getLibroPrest().getGenero().equalsIgnoreCase("aventuras")
+                && p.getFechaDev().isAfter(LocalDate.now()))
+                .forEach(p -> System.out.println(p));
+    }
+
+    public static void ordenacionesConStreams() {
+        System.out.println("\nListado de libros ordenados por orden alfabetico por titulo:");
+        libros.stream().sorted(Comparator.comparing(Libro::getTitulo).reversed()).forEach(l -> System.out.println(l));
+
+        System.out.println("\nListado de prestamos ordenados por fecha de prestamo:");
+        prestamos.stream().sorted(Comparator.comparing(Prestamo::getFechaPrest).reversed()).forEach(p -> System.out.println(p));
+
+        System.out.println("\nListado de libros ordenados por numero de prestamos:");
+        libros.stream().sorted(Comparator.comparing(l->numPrestamosLibro(l.getIsbn())))
+                .forEach(l -> System.out.println(l + " Unidades prestadas" + numPrestamosLibro(l.getIsbn())));
+
+    }
+
+    public static int numPrestamosLibro(String isbn) {
+        int cont = 0;
+        for (Prestamo p : prestamos) {
+            if (p.getLibroPrest().getIsbn().equalsIgnoreCase(isbn)) {
+                cont++;
+            }
+        }
+        for (Prestamo p : prestamosHist) {
+            if (p.getLibroPrest().getIsbn().equalsIgnoreCase(isbn)) {
+                cont++;
+            }
+        }
+        return cont;
     }
 
     /* =====================================================
